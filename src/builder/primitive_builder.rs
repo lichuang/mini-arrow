@@ -1,6 +1,10 @@
 use bitvec::vec::BitVec;
 
-use crate::{PrimitiveType, array::PrimitiveArray};
+use crate::{
+  PrimitiveType,
+  array::PrimitiveArray,
+  scalar::{Scalar, ScalarRef},
+};
 
 use super::ArrayBuilder;
 
@@ -12,7 +16,13 @@ pub struct PrimitiveArrayBuilder<T: PrimitiveType> {
   bitmap: BitVec,
 }
 
-impl<T: PrimitiveType> ArrayBuilder for PrimitiveArrayBuilder<T> {
+impl<T: PrimitiveType> ArrayBuilder for PrimitiveArrayBuilder<T>
+where
+  T: PrimitiveType,
+  T: Scalar<ArrayType = PrimitiveArray<T>>,
+  for<'a> T: ScalarRef<'a, ScalarType = T, ArrayType = PrimitiveArray<T>>,
+  for<'a> T: Scalar<RefType<'a> = T>,
+{
   type Array = PrimitiveArray<T>;
 
   fn with_capacity(capacity: usize) -> Self {

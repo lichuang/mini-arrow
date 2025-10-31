@@ -1,15 +1,18 @@
-use std::fmt::Debug;
-
 use iterator::ArrayIterator;
 
 use crate::builder::ArrayBuilder;
+use crate::scalar::Scalar;
+use crate::scalar::ScalarRef;
 
-pub trait Array: Sized + 'static {
+pub trait Array: Sized + 'static
+where
+  for<'a> Self::Item: Scalar<RefType<'a> = Self::RefItem<'a>>,
+{
   type Builder: ArrayBuilder<Array = Self>;
 
-  type Item: Debug;
+  type Item: Scalar<ArrayType = Self>;
 
-  type RefItem<'a>: Copy + Debug;
+  type RefItem<'a>: ScalarRef<'a, ScalarType = Self::Item, ArrayType = Self>;
 
   fn get(&self, idx: usize) -> Option<Self::RefItem<'_>>;
 

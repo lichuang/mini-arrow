@@ -1,6 +1,10 @@
 use bitvec::vec::BitVec;
 
-use crate::{PrimitiveType, builder::PrimitiveArrayBuilder};
+use crate::{
+  PrimitiveType,
+  builder::PrimitiveArrayBuilder,
+  scalar::{Scalar, ScalarRef},
+};
 
 use super::{Array, iterator::ArrayIterator};
 
@@ -17,7 +21,13 @@ pub type I32Array = PrimitiveArray<i32>;
 impl PrimitiveType for i32 {}
 impl PrimitiveType for f32 {}
 
-impl<T: PrimitiveType> Array for PrimitiveArray<T> {
+impl<T: PrimitiveType> Array for PrimitiveArray<T>
+where
+  T: PrimitiveType,
+  T: Scalar<ArrayType = Self>,
+  for<'a> T: ScalarRef<'a, ScalarType = T, ArrayType = Self>,
+  for<'a> T: Scalar<RefType<'a> = T>,
+{
   type Builder = PrimitiveArrayBuilder<T>;
 
   type Item = T;
