@@ -12,3 +12,6 @@ pub trait ArrayBuilder {
 
 mod primitive_builder;
 pub use primitive_builder::PrimitiveArrayBuilder;
+
+mod string_builder;
+pub use string_builder::StringArrayBuilder;
