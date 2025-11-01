@@ -2,7 +2,7 @@ use bitvec::vec::BitVec;
 
 use crate::{
   PrimitiveType,
-  array::PrimitiveArray,
+  array::{ArrayImpl, PrimitiveArray},
   scalar::{Scalar, ScalarRef},
 };
 
@@ -22,6 +22,8 @@ where
   T: Scalar<ArrayType = PrimitiveArray<T>>,
   for<'a> T: ScalarRef<'a, ScalarType = T, ArrayType = PrimitiveArray<T>>,
   for<'a> T: Scalar<RefType<'a> = T>,
+  PrimitiveArray<T>: Into<ArrayImpl>,
+  PrimitiveArray<T>: TryFrom<ArrayImpl>,
 {
   type Array = PrimitiveArray<T>;
 
@@ -49,3 +51,5 @@ where
     PrimitiveArray::new(self.data, self.bitmap)
   }
 }
+
+pub type I32ArrayBuilder = PrimitiveArrayBuilder<i32>;

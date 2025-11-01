@@ -10,7 +10,15 @@ pub trait ArrayBuilder {
   fn finish(self) -> Self::Array;
 }
 
+pub enum ArrayBuilderImpl {
+  Int32(I32ArrayBuilder),
+  String(StringArrayBuilder),
+}
+
+mod impls;
+
 mod primitive_builder;
+pub use primitive_builder::I32ArrayBuilder;
 pub use primitive_builder::PrimitiveArrayBuilder;
 
 mod string_builder;

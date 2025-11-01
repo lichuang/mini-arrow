@@ -6,3 +6,4 @@ readme = "README.md"
 
 [dependencies]
 bitvec = "1"
+thiserror = "1"

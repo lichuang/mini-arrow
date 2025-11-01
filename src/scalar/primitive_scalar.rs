@@ -1,3 +1,4 @@
+/* saved by impl macros
 use crate::array::I32Array;
 
 use super::{Scalar, ScalarRef};
@@ -19,3 +20,4 @@ impl<'a> ScalarRef<'a> for i32 {
     *self
   }
 }
+*/

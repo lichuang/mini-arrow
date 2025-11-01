@@ -6,7 +6,7 @@ use crate::{
   scalar::{Scalar, ScalarRef},
 };
 
-use super::{Array, iterator::ArrayIterator};
+use super::{Array, ArrayImpl, iterator::ArrayIterator};
 
 pub struct PrimitiveArray<T: PrimitiveType> {
   /// The actual data of this array.
@@ -19,7 +19,6 @@ pub struct PrimitiveArray<T: PrimitiveType> {
 pub type I32Array = PrimitiveArray<i32>;
 
 impl PrimitiveType for i32 {}
-impl PrimitiveType for f32 {}
 
 impl<T: PrimitiveType> Array for PrimitiveArray<T>
 where
@@ -27,6 +26,8 @@ where
   T: Scalar<ArrayType = Self>,
   for<'a> T: ScalarRef<'a, ScalarType = T, ArrayType = Self>,
   for<'a> T: Scalar<RefType<'a> = T>,
+  Self: Into<ArrayImpl>,
+  Self: TryFrom<ArrayImpl>,
 {
   type Builder = PrimitiveArrayBuilder<T>;
 
