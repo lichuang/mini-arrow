@@ -1,12 +1,12 @@
 use bitvec::vec::BitVec;
 
 use crate::{
-  PrimitiveType,
+  PrimitiveType, TypeMismatch,
   array::{ArrayImpl, PrimitiveArray},
   scalar::{Scalar, ScalarRef},
 };
 
-use super::ArrayBuilder;
+use super::{ArrayBuilder, ArrayBuilderImpl};
 
 pub struct PrimitiveArrayBuilder<T: PrimitiveType> {
   /// The actual data of this array.
@@ -53,3 +53,27 @@ where
 }
 
 pub type I32ArrayBuilder = PrimitiveArrayBuilder<i32>;
+
+#[doc = concat!("Implement [`ArrayBuilderImpl`] -> [`", stringify!(I32ArrayBuilder), "`]")]
+impl TryFrom<ArrayBuilderImpl> for I32ArrayBuilder {
+  type Error = TypeMismatch;
+
+  fn try_from(builder: ArrayBuilderImpl) -> Result<Self, Self::Error> {
+    match builder {
+      ArrayBuilderImpl::Int32(builder) => Ok(builder),
+      other => Err(TypeMismatch(stringify!(Int32), other.identifier())),
+    }
+  }
+}
+
+#[doc = concat!("Implement mut ref of [`ArrayBuilderImpl`] -> [`", stringify!(I32ArrayBuilder), "`]")]
+impl<'a> TryFrom<&'a mut ArrayBuilderImpl> for &'a mut I32ArrayBuilder {
+  type Error = TypeMismatch;
+
+  fn try_from(builder: &'a mut ArrayBuilderImpl) -> Result<Self, Self::Error> {
+    match builder {
+      ArrayBuilderImpl::Int32(builder) => Ok(builder),
+      other => Err(TypeMismatch(stringify!(Int32), other.identifier())),
+    }
+  }
+}

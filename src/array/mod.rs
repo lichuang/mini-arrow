@@ -38,43 +38,8 @@ pub enum ArrayImpl {
   String(StringArray),
 }
 
-/* saved by impl macros
-impl TryFrom<ArrayImpl> for I32Array {
-  type Error = ();
-
-  fn try_from(array: ArrayImpl) -> Result<Self, Self::Error> {
-    match array {
-      ArrayImpl::Int32(array) => Ok(array),
-      _ => Err(()),
-    }
-  }
-}
-
-impl From<I32Array> for ArrayImpl {
-  fn from(array: I32Array) -> Self {
-    ArrayImpl::Int32(array)
-  }
-}
-
-impl TryFrom<ArrayImpl> for StringArray {
-  type Error = ();
-
-  fn try_from(array: ArrayImpl) -> Result<Self, Self::Error> {
-    match array {
-      ArrayImpl::String(array) => Ok(array),
-      _ => Err(()),
-    }
-  }
-}
-
-impl From<StringArray> for ArrayImpl {
-  fn from(array: StringArray) -> Self {
-    ArrayImpl::String(array)
-  }
-}
-*/
-
-mod impls;
+mod array_impl;
+//mod impls;
 mod iterator;
 
 mod primitive_array;

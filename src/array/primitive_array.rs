@@ -1,7 +1,7 @@
 use bitvec::vec::BitVec;
 
 use crate::{
-  PrimitiveType,
+  PrimitiveType, TypeMismatch,
   builder::PrimitiveArrayBuilder,
   scalar::{Scalar, ScalarRef},
 };
@@ -55,5 +55,23 @@ where
 impl<T: PrimitiveType> PrimitiveArray<T> {
   pub fn new(data: Vec<T>, bitmap: BitVec) -> Self {
     Self { data, bitmap }
+  }
+}
+
+impl TryFrom<ArrayImpl> for I32Array {
+  type Error = TypeMismatch;
+
+  fn try_from(array: ArrayImpl) -> Result<Self, Self::Error> {
+    match array {
+      ArrayImpl::Int32(array) => Ok(array),
+      other => Err(TypeMismatch(stringify!(Int32), other.identifier())),
+    }
+  }
+}
+
+#[doc = concat!("Implement [`", stringify!(I32Array), "`] -> [`ArrayImpl`]")]
+impl From<I32Array> for ArrayImpl {
+  fn from(array: I32Array) -> Self {
+    ArrayImpl::Int32(array)
   }
 }

@@ -1,6 +1,6 @@
 pub mod array;
 pub mod builder;
-mod macros;
+//mod macros;
 pub mod scalar;
 pub mod types;
 

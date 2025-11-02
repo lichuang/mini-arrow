@@ -25,80 +25,30 @@ pub enum ScalarImpl {
   String(String),
 }
 
-/*
-impl<'a> TryFrom<ScalarImpl> for i32 {
-  type Error = ();
-  fn try_from(that: ScalarImpl) -> Result<Self, Self::Error> {
-    match that {
-      ScalarImpl::Int32(v) => Ok(v),
-      _ => Err(()),
+impl ScalarImpl {
+  pub fn identifier(&self) -> &'static str {
+    match self {
+      Self::Int32(_) => stringify!(Int32),
+      Self::String(_) => stringify!(String),
     }
   }
 }
-
-impl From<i32> for ScalarImpl {
-  fn from(that: i32) -> Self {
-    ScalarImpl::Int32(that)
-  }
-}
-
-impl<'a> TryFrom<ScalarImpl> for String {
-  type Error = ();
-  fn try_from(that: ScalarImpl) -> Result<Self, Self::Error> {
-    match that {
-      ScalarImpl::String(v) => Ok(v),
-      _ => Err(()),
-    }
-  }
-}
-
-impl From<String> for ScalarImpl {
-  fn from(that: String) -> Self {
-    ScalarImpl::String(that)
-  }
-}
-*/
 
 pub enum ScalarRefImpl<'a> {
   Int32(i32),
   String(&'a str),
 }
 
-/*
-impl<'a> TryFrom<ScalarRefImpl<'a>> for i32 {
-  type Error = ();
-  fn try_from(that: ScalarRefImpl<'a>) -> Result<Self, Self::Error> {
-    match that {
-      ScalarRefImpl::Int32(v) => Ok(v),
-      _ => Err(()),
+impl<'a> ScalarRefImpl<'a> {
+  pub fn identifier(&self) -> &'static str {
+    match self {
+      Self::Int32(_) => stringify!(Int32),
+      Self::String(_) => stringify!(String),
     }
   }
 }
 
-impl<'a> From<i32> for ScalarRefImpl<'a> {
-  fn from(that: i32) -> Self {
-    ScalarRefImpl::Int32(that)
-  }
-}
-
-impl<'a> TryFrom<ScalarRefImpl<'a>> for &'a str {
-  type Error = ();
-  fn try_from(that: ScalarRefImpl<'a>) -> Result<Self, Self::Error> {
-    match that {
-      ScalarRefImpl::String(v) => Ok(v),
-      _ => Err(()),
-    }
-  }
-}
-
-impl<'a> From<&'a str> for ScalarRefImpl<'a> {
-  fn from(that: &'a str) -> Self {
-    ScalarRefImpl::String(that)
-  }
-}
-*/
-
-mod impls;
+//mod impls;
 mod primitive_scalar;
 mod string_scalar;
 

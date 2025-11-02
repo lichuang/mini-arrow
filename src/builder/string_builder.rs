@@ -1,8 +1,8 @@
 use bitvec::vec::BitVec;
 
-use crate::array::StringArray;
+use crate::{TypeMismatch, array::StringArray};
 
-use super::ArrayBuilder;
+use super::{ArrayBuilder, ArrayBuilderImpl};
 
 pub struct StringArrayBuilder {
   /// The flattened data of string.
@@ -44,5 +44,29 @@ impl ArrayBuilder for StringArrayBuilder {
 
   fn finish(self) -> Self::Array {
     StringArray::new(self.data, self.offsets, self.bitmap)
+  }
+}
+
+#[doc = concat!("Implement [`ArrayBuilderImpl`] -> [`", stringify!(StringArrayBuilder), "`]")]
+impl TryFrom<ArrayBuilderImpl> for StringArrayBuilder {
+  type Error = TypeMismatch;
+
+  fn try_from(builder: ArrayBuilderImpl) -> Result<Self, Self::Error> {
+    match builder {
+      ArrayBuilderImpl::String(builder) => Ok(builder),
+      other => Err(TypeMismatch(stringify!(String), other.identifier())),
+    }
+  }
+}
+
+#[doc = concat!("Implement mut ref of [`ArrayBuilderImpl`] -> [`", stringify!(StringArrayBuilder), "`]")]
+impl<'a> TryFrom<&'a mut ArrayBuilderImpl> for &'a mut StringArrayBuilder {
+  type Error = TypeMismatch;
+
+  fn try_from(builder: &'a mut ArrayBuilderImpl) -> Result<Self, Self::Error> {
+    match builder {
+      ArrayBuilderImpl::String(builder) => Ok(builder),
+      other => Err(TypeMismatch(stringify!(String), other.identifier())),
+    }
   }
 }

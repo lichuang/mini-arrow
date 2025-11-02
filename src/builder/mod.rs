@@ -15,7 +15,8 @@ pub enum ArrayBuilderImpl {
   String(StringArrayBuilder),
 }
 
-mod impls;
+mod builder_impl;
+//mod impls;
 
 mod primitive_builder;
 pub use primitive_builder::I32ArrayBuilder;

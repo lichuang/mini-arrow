@@ -1,8 +1,8 @@
 use bitvec::vec::BitVec;
 
-use crate::builder::StringArrayBuilder;
+use crate::{TypeMismatch, builder::StringArrayBuilder};
 
-use super::{Array, iterator::ArrayIterator};
+use super::{Array, ArrayImpl, iterator::ArrayIterator};
 
 pub struct StringArray {
   /// The flattened data of string.
@@ -48,5 +48,23 @@ impl StringArray {
       offsets,
       bitmap,
     }
+  }
+}
+
+impl TryFrom<ArrayImpl> for StringArray {
+  type Error = TypeMismatch;
+
+  fn try_from(array: ArrayImpl) -> Result<Self, Self::Error> {
+    match array {
+      ArrayImpl::String(array) => Ok(array),
+      other => Err(TypeMismatch(stringify!(String), other.identifier())),
+    }
+  }
+}
+
+#[doc = concat!("Implement [`", stringify!(StringArray), "`] -> [`ArrayImpl`]")]
+impl From<StringArray> for ArrayImpl {
+  fn from(array: StringArray) -> Self {
+    ArrayImpl::String(array)
   }
 }
