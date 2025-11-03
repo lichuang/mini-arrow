@@ -17,8 +17,12 @@ pub struct PrimitiveArray<T: PrimitiveType> {
 }
 
 pub type I32Array = PrimitiveArray<i32>;
+pub type I64Array = PrimitiveArray<i64>;
+pub type BoolArray = PrimitiveArray<bool>;
 
 impl PrimitiveType for i32 {}
+impl PrimitiveType for i64 {}
+impl PrimitiveType for bool {}
 
 impl<T: PrimitiveType> Array for PrimitiveArray<T>
 where
@@ -73,5 +77,41 @@ impl TryFrom<ArrayImpl> for I32Array {
 impl From<I32Array> for ArrayImpl {
   fn from(array: I32Array) -> Self {
     ArrayImpl::Int32(array)
+  }
+}
+
+impl TryFrom<ArrayImpl> for BoolArray {
+  type Error = TypeMismatch;
+
+  fn try_from(array: ArrayImpl) -> Result<Self, Self::Error> {
+    match array {
+      ArrayImpl::Bool(array) => Ok(array),
+      other => Err(TypeMismatch(stringify!(Bool), other.identifier())),
+    }
+  }
+}
+
+#[doc = concat!("Implement [`", stringify!(BoolArray), "`] -> [`ArrayImpl`]")]
+impl From<BoolArray> for ArrayImpl {
+  fn from(array: BoolArray) -> Self {
+    ArrayImpl::Bool(array)
+  }
+}
+
+impl TryFrom<ArrayImpl> for I64Array {
+  type Error = TypeMismatch;
+
+  fn try_from(array: ArrayImpl) -> Result<Self, Self::Error> {
+    match array {
+      ArrayImpl::Int64(array) => Ok(array),
+      other => Err(TypeMismatch(stringify!(Int64), other.identifier())),
+    }
+  }
+}
+
+#[doc = concat!("Implement [`", stringify!(I64Array), "`] -> [`ArrayImpl`]")]
+impl From<I64Array> for ArrayImpl {
+  fn from(array: I64Array) -> Self {
+    ArrayImpl::Int64(array)
   }
 }

@@ -12,6 +12,8 @@ pub trait ArrayBuilder {
 
 pub enum ArrayBuilderImpl {
   Int32(I32ArrayBuilder),
+  Int64(I64ArrayBuilder),
+  Bool(BoolArrayBuilder),
   String(StringArrayBuilder),
 }
 
@@ -19,7 +21,9 @@ mod builder_impl;
 //mod impls;
 
 mod primitive_builder;
+pub use primitive_builder::BoolArrayBuilder;
 pub use primitive_builder::I32ArrayBuilder;
+pub use primitive_builder::I64ArrayBuilder;
 pub use primitive_builder::PrimitiveArrayBuilder;
 
 mod string_builder;

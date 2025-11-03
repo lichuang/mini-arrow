@@ -22,6 +22,8 @@ pub trait ScalarRef<'a>:
 
 pub enum ScalarImpl {
   Int32(i32),
+  Int64(i64),
+  Bool(bool),
   String(String),
 }
 
@@ -29,6 +31,8 @@ impl ScalarImpl {
   pub fn identifier(&self) -> &'static str {
     match self {
       Self::Int32(_) => stringify!(Int32),
+      Self::Int64(_) => stringify!(Int64),
+      Self::Bool(_) => stringify!(Bool),
       Self::String(_) => stringify!(String),
     }
   }
@@ -36,6 +40,8 @@ impl ScalarImpl {
 
 pub enum ScalarRefImpl<'a> {
   Int32(i32),
+  Int64(i64),
+  Bool(bool),
   String(&'a str),
 }
 
@@ -43,6 +49,8 @@ impl<'a> ScalarRefImpl<'a> {
   pub fn identifier(&self) -> &'static str {
     match self {
       Self::Int32(_) => stringify!(Int32),
+      Self::Int64(_) => stringify!(Int64),
+      Self::Bool(_) => stringify!(Bool),
       Self::String(_) => stringify!(String),
     }
   }

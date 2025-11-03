@@ -53,6 +53,8 @@ where
 }
 
 pub type I32ArrayBuilder = PrimitiveArrayBuilder<i32>;
+pub type I64ArrayBuilder = PrimitiveArrayBuilder<i64>;
+pub type BoolArrayBuilder = PrimitiveArrayBuilder<bool>;
 
 #[doc = concat!("Implement [`ArrayBuilderImpl`] -> [`", stringify!(I32ArrayBuilder), "`]")]
 impl TryFrom<ArrayBuilderImpl> for I32ArrayBuilder {
@@ -73,6 +75,54 @@ impl<'a> TryFrom<&'a mut ArrayBuilderImpl> for &'a mut I32ArrayBuilder {
   fn try_from(builder: &'a mut ArrayBuilderImpl) -> Result<Self, Self::Error> {
     match builder {
       ArrayBuilderImpl::Int32(builder) => Ok(builder),
+      other => Err(TypeMismatch(stringify!(Int32), other.identifier())),
+    }
+  }
+}
+
+#[doc = concat!("Implement [`ArrayBuilderImpl`] -> [`", stringify!(I64ArrayBuilder), "`]")]
+impl TryFrom<ArrayBuilderImpl> for I64ArrayBuilder {
+  type Error = TypeMismatch;
+
+  fn try_from(builder: ArrayBuilderImpl) -> Result<Self, Self::Error> {
+    match builder {
+      ArrayBuilderImpl::Int64(builder) => Ok(builder),
+      other => Err(TypeMismatch(stringify!(Int64), other.identifier())),
+    }
+  }
+}
+
+#[doc = concat!("Implement mut ref of [`ArrayBuilderImpl`] -> [`", stringify!(I64ArrayBuilder), "`]")]
+impl<'a> TryFrom<&'a mut ArrayBuilderImpl> for &'a mut I64ArrayBuilder {
+  type Error = TypeMismatch;
+
+  fn try_from(builder: &'a mut ArrayBuilderImpl) -> Result<Self, Self::Error> {
+    match builder {
+      ArrayBuilderImpl::Int64(builder) => Ok(builder),
+      other => Err(TypeMismatch(stringify!(Int32), other.identifier())),
+    }
+  }
+}
+
+#[doc = concat!("Implement [`ArrayBuilderImpl`] -> [`", stringify!(BoolArrayBuilder), "`]")]
+impl TryFrom<ArrayBuilderImpl> for BoolArrayBuilder {
+  type Error = TypeMismatch;
+
+  fn try_from(builder: ArrayBuilderImpl) -> Result<Self, Self::Error> {
+    match builder {
+      ArrayBuilderImpl::Bool(builder) => Ok(builder),
+      other => Err(TypeMismatch(stringify!(Int32), other.identifier())),
+    }
+  }
+}
+
+#[doc = concat!("Implement mut ref of [`ArrayBuilderImpl`] -> [`", stringify!(BoolArrayBuilder), "`]")]
+impl<'a> TryFrom<&'a mut ArrayBuilderImpl> for &'a mut BoolArrayBuilder {
+  type Error = TypeMismatch;
+
+  fn try_from(builder: &'a mut ArrayBuilderImpl) -> Result<Self, Self::Error> {
+    match builder {
+      ArrayBuilderImpl::Bool(builder) => Ok(builder),
       other => Err(TypeMismatch(stringify!(Int32), other.identifier())),
     }
   }

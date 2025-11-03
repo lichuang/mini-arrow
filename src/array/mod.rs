@@ -35,6 +35,8 @@ where
 
 pub enum ArrayImpl {
   Int32(I32Array),
+  Int64(I64Array),
+  Bool(BoolArray),
   String(StringArray),
 }
 
@@ -43,7 +45,9 @@ mod array_impl;
 mod iterator;
 
 mod primitive_array;
+pub use primitive_array::BoolArray;
 pub use primitive_array::I32Array;
+pub use primitive_array::I64Array;
 pub use primitive_array::PrimitiveArray;
 
 mod string_array;
