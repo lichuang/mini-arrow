@@ -49,6 +49,7 @@ mod tests {
   use crate::array::BoolArray;
   use crate::array::I32Array;
   use crate::array::I64Array;
+  use crate::array::StringArray;
 
   use super::cmp::*;
   use super::string::*;
@@ -74,6 +75,38 @@ mod tests {
       .eval(
         &I32Array::from_slice(&[Some(0), Some(1), None]).into(),
         &I32Array::from_slice(&[Some(1), Some(0), None]).into(),
+      )
+      .unwrap();
+    check_array_eq::<BoolArray>(
+      (&result).try_into().unwrap(),
+      &[Some(true), Some(false), None],
+    );
+  }
+
+  #[test]
+  fn test_cmp_ge_str() {
+    let expr = BinaryExpression::<StringArray, StringArray, BoolArray, _>::new(
+      cmp_ge::<StringArray, StringArray, StringArray>,
+    );
+    let result = expr
+      .eval(
+        &StringArray::from_slice(&[Some("0"), Some("1"), None]).into(),
+        &StringArray::from_slice(&[Some("1"), Some("0"), None]).into(),
+      )
+      .unwrap();
+    check_array_eq::<BoolArray>(
+      (&result).try_into().unwrap(),
+      &[Some(false), Some(true), None],
+    );
+  }
+
+  #[test]
+  fn test_str_contains() {
+    let expr = BinaryExpression::<StringArray, StringArray, BoolArray, _>::new(str_contains);
+    let result = expr
+      .eval(
+        &StringArray::from_slice(&[Some("000"), Some("111"), None]).into(),
+        &StringArray::from_slice(&[Some("0"), Some("0"), None]).into(),
       )
       .unwrap();
     check_array_eq::<BoolArray>(

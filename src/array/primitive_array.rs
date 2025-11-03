@@ -73,6 +73,17 @@ impl TryFrom<ArrayImpl> for I32Array {
   }
 }
 
+impl<'a> TryFrom<&'a ArrayImpl> for &'a I32Array {
+  type Error = TypeMismatch;
+
+  fn try_from(array: &'a ArrayImpl) -> Result<Self, Self::Error> {
+    match array {
+      ArrayImpl::Int32(array) => Ok(array),
+      other => Err(TypeMismatch(stringify!(Int32), other.identifier())),
+    }
+  }
+}
+
 #[doc = concat!("Implement [`", stringify!(I32Array), "`] -> [`ArrayImpl`]")]
 impl From<I32Array> for ArrayImpl {
   fn from(array: I32Array) -> Self {
@@ -91,6 +102,17 @@ impl TryFrom<ArrayImpl> for BoolArray {
   }
 }
 
+impl<'a> TryFrom<&'a ArrayImpl> for &'a BoolArray {
+  type Error = TypeMismatch;
+
+  fn try_from(array: &'a ArrayImpl) -> Result<Self, Self::Error> {
+    match array {
+      ArrayImpl::Bool(array) => Ok(array),
+      other => Err(TypeMismatch(stringify!(Bool), other.identifier())),
+    }
+  }
+}
+
 #[doc = concat!("Implement [`", stringify!(BoolArray), "`] -> [`ArrayImpl`]")]
 impl From<BoolArray> for ArrayImpl {
   fn from(array: BoolArray) -> Self {
@@ -102,6 +124,17 @@ impl TryFrom<ArrayImpl> for I64Array {
   type Error = TypeMismatch;
 
   fn try_from(array: ArrayImpl) -> Result<Self, Self::Error> {
+    match array {
+      ArrayImpl::Int64(array) => Ok(array),
+      other => Err(TypeMismatch(stringify!(Int64), other.identifier())),
+    }
+  }
+}
+
+impl<'a> TryFrom<&'a ArrayImpl> for &'a I64Array {
+  type Error = TypeMismatch;
+
+  fn try_from(array: &'a ArrayImpl) -> Result<Self, Self::Error> {
     match array {
       ArrayImpl::Int64(array) => Ok(array),
       other => Err(TypeMismatch(stringify!(Int64), other.identifier())),

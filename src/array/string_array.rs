@@ -62,6 +62,17 @@ impl TryFrom<ArrayImpl> for StringArray {
   }
 }
 
+impl<'a> TryFrom<&'a ArrayImpl> for &'a StringArray {
+  type Error = TypeMismatch;
+
+  fn try_from(array: &'a ArrayImpl) -> Result<Self, Self::Error> {
+    match array {
+      ArrayImpl::String(array) => Ok(array),
+      other => Err(TypeMismatch(stringify!(String), other.identifier())),
+    }
+  }
+}
+
 #[doc = concat!("Implement [`", stringify!(StringArray), "`] -> [`ArrayImpl`]")]
 impl From<StringArray> for ArrayImpl {
   fn from(array: StringArray) -> Self {
