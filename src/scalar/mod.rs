@@ -20,6 +20,7 @@ pub trait ScalarRef<'a>:
   fn as_scalar(&self) -> Self::ScalarType;
 }
 
+#[derive(Clone, Debug, PartialEq)]
 pub enum ScalarImpl {
   Int32(i32),
   Int64(i64),
@@ -38,6 +39,7 @@ impl ScalarImpl {
   }
 }
 
+#[derive(Copy, Clone, Debug, PartialEq)]
 pub enum ScalarRefImpl<'a> {
   Int32(i32),
   Int64(i64),
